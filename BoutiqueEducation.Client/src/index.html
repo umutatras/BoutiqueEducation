@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>BoutiqueEducation Client</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  
+  <!-- BOOTSTRAP CSS -->
+  <link id="style" href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- STYLE CSS -->
+  <link href="assets/css/style.css" rel="stylesheet" />
+  <link href="assets/css/dark-style.css" rel="stylesheet" />
+  <link href="assets/css/skin-modes.css" rel="stylesheet" />
+  <link href="assets/css/transparent-style.css" rel="stylesheet" />
+
+  <!--- FONT-ICONS CSS -->
+  <link href="assets/css/icons.css" rel="stylesheet" />
+
+  <!-- COLOR SKIN CSS -->
+  <link id="theme" rel="stylesheet" type="text/css" media="all" href="assets/colors/color1.css" />
+</head>
+<body class="app sidebar-mini ltr light-mode">
+
+  <!-- Dark mode: localStorage'dan F5 sonrası doğru tema yükle -->
+  <script>
+    (function() {
+      var dm = localStorage.getItem('darkMode');
+      if (dm === 'true') {
+        document.body.classList.remove('light-mode');
+        document.body.classList.add('dark-mode');
+      }
+    })();
+  </script>
+
+  <app-root></app-root>
+
+  <!-- BACK-TO-TOP -->
+  <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+  <!-- JQUERY & BOOTSTRAP GLOBALS JS -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/plugins/bootstrap/js/popper.min.js"></script>
+  <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

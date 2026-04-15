@@ -1,0 +1,94 @@
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Kullanıcı Yönetimi</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+            <li class="breadcrumb-item active">Kullanıcılar</li>
+        </ol>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header border-bottom">
+        <h3 class="card-title">Kayıtlı Kullanıcılar</h3>
+    </div>
+    <div class="card-body p-0">
+        <div class="text-center py-5" *ngIf="isLoading">
+            <span class="spinner-border text-primary"></span>
+        </div>
+
+        <div class="table-responsive" *ngIf="!isLoading && users.length > 0">
+            <table class="table table-vcenter card-table border-bottom">
+                <thead>
+                    <tr>
+                        <th>Ad Soyad</th>
+                        <th>E-posta</th>
+                        <th>Bölüm</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let u of users">
+                        <td class="fw-bold">{{ u.fullName }}</td>
+                        <td>{{ u.email }}</td>
+                        <td>
+                            <span class="badge bg-primary-transparent text-primary" *ngIf="u.department">{{ u.department }}</span>
+                            <span class="text-muted" *ngIf="!u.department">-</span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-info" (click)="openEditModal(u)">
+                                <i class="fe fe-edit me-1"></i> Düzenle
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- EDIT USER MODAL -->
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Kullanıcıyı Düzenle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Ad Soyad</label>
+                    <input type="text" class="form-control" [(ngModel)]="editForm.fullName">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Bölüm</label>
+                    <select class="form-select" [(ngModel)]="editForm.department">
+                        <option value="">-- Bölüm Yok / Öğrenci --</option>
+                        <option value="Matematik">Matematik</option>
+                        <option value="Fizik">Fizik</option>
+                        <option value="Biyoloji">Biyoloji</option>
+                        <option value="Kimya">Kimya</option>
+                        <option value="İngilizce">İngilizce</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Rol (Opsiyonel)</label>
+                    <select class="form-select" [(ngModel)]="editForm.role">
+                        <option value="">-- Değiştirme --</option>
+                        <option value="Student">Öğrenci</option>
+                        <option value="Teacher">Öğretmen</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Şifre Değiştir (Opsiyonel)</label>
+                    <input type="password" class="form-control" [(ngModel)]="editForm.newPassword" placeholder="Yeni şifre belirle...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                <button type="button" class="btn btn-primary" (click)="submitEdit()">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>

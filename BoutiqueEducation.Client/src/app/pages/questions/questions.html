@@ -1,0 +1,191 @@
+<!-- PAGE-HEADER -->
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Soru İstasyonu</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0);">Ana Sayfa</a></li>
+            <li class="breadcrumb-item active">Sorular</li>
+        </ol>
+    </div>
+    <div class="ms-auto">
+        <button class="btn btn-success" *ngIf="authService.isStudent()" (click)="openAskModal()">
+            <i class="fe fe-plus me-1"></i> Yeni Soru Sor
+        </button>
+    </div>
+</div>
+
+<!-- Hata -->
+<div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h3 class="card-title mb-0">
+            <ng-container *ngIf="authService.isTeacher()">Bölümünüze Ait Sorular</ng-container>
+            <ng-container *ngIf="!authService.isTeacher()">Tüm Sorular</ng-container>
+        </h3>
+        <span class="badge bg-primary fs-13">{{ questions.length }} soru</span>
+    </div>
+    <div class="card-body p-0">
+
+        <!-- Loading -->
+        <div class="text-center py-5" *ngIf="isLoading">
+            <span class="spinner-border text-primary"></span>
+            <p class="mt-2 text-muted">Sorular yükleniyor...</p>
+        </div>
+
+        <!-- Boş -->
+        <div class="text-center py-5 text-muted" *ngIf="!isLoading && questions.length === 0">
+            <i class="fe fe-inbox" style="font-size:3rem;opacity:0.2;"></i>
+            <p class="mt-2">
+                <ng-container *ngIf="authService.isTeacher()">Bölümünüze ait soru bulunmuyor.</ng-container>
+                <ng-container *ngIf="!authService.isTeacher()">Henüz soru yok. İlk soruyu siz sorun!</ng-container>
+            </p>
+        </div>
+
+        <!-- Tablo -->
+        <div class="table-responsive" *ngIf="!isLoading && questions.length > 0">
+            <table class="table table-vcenter card-table">
+                <thead>
+                    <tr>
+                        <th>Soru</th>
+                        <th>Kategori</th>
+                        <th>Tarih</th>
+                        <th>Öğrenci</th>
+                        <th>Öğretmen</th>
+                        <th>Durum</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let q of questions">
+                        <td style="max-width:280px;">
+                            <span class="d-block text-truncate fw-semibold" style="max-width:270px;" [title]="q.content">
+                                {{ q.content }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge bg-azure-lt">{{ q.category || 'Genel' }}</span>
+                        </td>
+                        <td>{{ q.createdDate | date:'dd.MM.yyyy HH:mm' }}</td>
+                        <td>{{ q.studentName || '-' }}</td>
+                        <td>{{ q.teacherName || '-' }}</td>
+                        <td>
+                            <span class="badge"
+                                  [ngClass]="{'bg-success': q.status === 'Answered', 'bg-warning text-dark': q.status === 'Pending', 'bg-danger': q.status === 'Rejected'}">
+                                {{ q.status === 'Answered' ? 'Cevaplandı' : q.status === 'Pending' ? 'Bekliyor' : 'Reddedildi' }}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" (click)="openViewModal(q)">
+                                <i class="fe fe-eye me-1"></i> Detay
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Sayfalama -->
+        <div class="card-footer d-flex align-items-center justify-content-center" *ngIf="totalPageCount > 1">
+            <ul class="pagination mb-0">
+                <li class="page-item" [class.disabled]="pageNumber === 1">
+                    <a class="page-link" (click)="goToPage(pageNumber - 1)">‹</a>
+                </li>
+                <li class="page-item" *ngFor="let p of pages" [class.active]="p === pageNumber">
+                    <a class="page-link" (click)="goToPage(p)">{{ p }}</a>
+                </li>
+                <li class="page-item" [class.disabled]="pageNumber === totalPageCount">
+                    <a class="page-link" (click)="goToPage(pageNumber + 1)">›</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- DETAY / CEVAP MODAL -->
+<div class="modal fade" id="viewQuestionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content" *ngIf="selectedQuestion">
+            <div class="modal-header">
+                <h5 class="modal-title">Soru Detayı</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <span class="badge bg-azure-lt me-2">{{ selectedQuestion.category || 'Genel' }}</span>
+                    <span class="text-muted small">{{ selectedQuestion.studentName }}</span>
+                </div>
+
+                <div class="card border mb-3">
+                    <div class="card-body">
+                        <h6 class="text-muted mb-2">Soru:</h6>
+                        <p class="mb-0">{{ selectedQuestion.content }}</p>
+                        <img *ngIf="selectedQuestion.imageUrl" [src]="selectedQuestion.imageUrl.startsWith('http') ? selectedQuestion.imageUrl : (apiUrl + selectedQuestion.imageUrl)"
+                             class="img-fluid mt-3 rounded" style="max-height:250px;" alt="Soru görseli">
+                    </div>
+                </div>
+
+                <div class="card border bg-success-lt mb-3" *ngIf="selectedQuestion.status === 'Answered'">
+                    <div class="card-body">
+                        <h6 class="text-success mb-2"><i class="fe fe-check-circle me-1"></i> Cevap ({{ selectedQuestion.teacherName }}):</h6>
+                        <p class="mb-0">{{ selectedQuestion.answerText }}</p>
+                        <img *ngIf="selectedQuestion.answerImageUrl" [src]="apiUrl + selectedQuestion.answerImageUrl"
+                             class="img-fluid mt-3 rounded" style="max-height:250px;" alt="Cevap görseli">
+                    </div>
+                </div>
+
+                <div class="mb-3" *ngIf="authService.isTeacher() && selectedQuestion.status === 'Pending'">
+                    <label class="form-label fw-semibold">Cevabınızı yazın:</label>
+                    <textarea class="form-control" rows="4" [(ngModel)]="answerContent" placeholder="Açıklayıcı bir cevap yazın..."></textarea>
+                    
+                    <label class="form-label fw-semibold mt-3">Görsel Yükle (Opsiyonel):</label>
+                    <input type="file" class="form-control" (change)="onAnswerFileSelected($event)" accept="image/*">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-primary"
+                        *ngIf="authService.isTeacher() && selectedQuestion.status === 'Pending'"
+                        (click)="submitAnswer()">
+                    <i class="fe fe-send me-1"></i> Yanıt Gönder
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SORU SOR MODAL -->
+<div class="modal fade" id="askQuestionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Yeni Soru Sor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Kategori:</label>
+                    <select class="form-select" [(ngModel)]="newQuestion.category">
+                        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Sorunuz:</label>
+                    <textarea class="form-control" rows="4" [(ngModel)]="newQuestion.content"
+                              placeholder="Sorunuzu detaylıca açıklayın..."></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Görsel Yükle (Opsiyonel):</label>
+                    <input type="file" class="form-control" (change)="onQuestionFileSelected($event)" accept="image/*">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                <button type="button" class="btn btn-success" (click)="submitQuestion()"
+                        [disabled]="!newQuestion.content.trim()">
+                    <i class="fe fe-send me-1"></i> Gönder
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,154 @@
+<!-- PAGE-HEADER -->
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Genel İstatistikler</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0);">Ana Sayfa</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+        </ol>
+    </div>
+</div>
+<!-- PAGE-HEADER END -->
+
+<div class="row" *ngIf="isLoading">
+     <div class="col-12 text-center mt-5">
+         <span class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status" aria-hidden="true"></span>
+         <h5 class="mt-3 text-muted">Veriler Yükleniyor...</h5>
+     </div>
+</div>
+
+<div class="row" *ngIf="stats && !isLoading">
+    <!-- SORU İSTATİSTİKLERİ -->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
+        <h4 class="mb-4 font-weight-bold">Soru İstasyonu</h4>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xl-4">
+                <div class="card overflow-hidden">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="mt-2">
+                                <h6 class="">Toplam Soru Sayısı</h6>
+                                <h2 class="mb-0 number-font">{{ stats.totalQuestions }}</h2>
+                            </div>
+                            <div class="ms-auto">
+                                <div class="chart-wrapper mt-1">
+                                    <!-- A decorative icon circle instead of a chart -->
+                                    <div class="badge bg-primary-transparent text-primary fs-24 br-7 p-3"><i class="fe fe-message-square"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xl-4">
+                <div class="card overflow-hidden">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="mt-2">
+                                <h6 class="">Bekleyen (Pending)</h6>
+                                <h2 class="mb-0 number-font text-warning">{{ stats.pendingQuestions }}</h2>
+                            </div>
+                            <div class="ms-auto">
+                                <div class="chart-wrapper mt-1">
+                                    <div class="badge bg-warning-transparent text-warning fs-24 br-7 p-3"><i class="fe fe-clock"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xl-4">
+                <div class="card overflow-hidden">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="mt-2">
+                                <h6 class="">Yanıtlananlar</h6>
+                                <h2 class="mb-0 number-font text-success">{{ stats.answeredQuestions }}</h2>
+                            </div>
+                            <div class="ms-auto">
+                                <div class="chart-wrapper mt-1">
+                                    <div class="badge bg-success-transparent text-success fs-24 br-7 p-3"><i class="fe fe-check-square"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ÖDEV İSTATİSTİKLERİ -->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12 mt-4">
+        <h4 class="mb-4 font-weight-bold">Ödev Takip Sistemi</h4>
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-12 col-xl-3">
+                <div class="card overflow-hidden">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="mt-2">
+                                <h6 class="">Tüm Ödevler</h6>
+                                <h2 class="mb-0 number-font">{{ stats.totalTasks }}</h2>
+                            </div>
+                            <div class="ms-auto">
+                                <div class="chart-wrapper mt-1">
+                                    <div class="badge bg-info-transparent text-info fs-24 br-7 p-3"><i class="fe fe-folder"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 col-xl-3">
+                <div class="card overflow-hidden">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="mt-2">
+                                <h6 class="">Teslim Bekleyen</h6>
+                                <h2 class="mb-0 number-font text-danger">{{ stats.pendingTasks }}</h2>
+                            </div>
+                            <div class="ms-auto">
+                                <div class="chart-wrapper mt-1">
+                                    <div class="badge bg-danger-transparent text-danger fs-24 br-7 p-3"><i class="fe fe-activity"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 col-xl-3">
+                <div class="card overflow-hidden">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="mt-2">
+                                <h6 class="">Değerlendirmede</h6>
+                                <h2 class="mb-0 number-font text-warning">{{ stats.submittedTasks }}</h2>
+                            </div>
+                            <div class="ms-auto">
+                                <div class="chart-wrapper mt-1">
+                                    <div class="badge bg-warning-transparent text-warning fs-24 br-7 p-3"><i class="fe fe-file-text"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 col-xl-3">
+                <div class="card overflow-hidden">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="mt-2">
+                                <h6 class="">Onaylanan</h6>
+                                <h2 class="mb-0 number-font text-success">{{ stats.approvedTasks }}</h2>
+                            </div>
+                            <div class="ms-auto">
+                                <div class="chart-wrapper mt-1">
+                                    <div class="badge bg-success-transparent text-success fs-24 br-7 p-3"><i class="fe fe-award"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

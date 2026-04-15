@@ -1,0 +1,93 @@
+Butik Eğitim Platformu – Öğrenci, Öğretmen ve Admin Paneli (MVP)
+
+👥 KULLANICI ROLLERİ
+
+👨‍🎓 Öğrenci
+	•	Google ile giriş yapar
+	•	Soru fotoğrafı yükleyebilir
+	•	Öğretmenden gelen cevapları görüntüleyebilir
+	•	Öğretmen ile metin tabanlı mesajlaşabilir
+	•	Chat üzerinden gönderilen ders linklerine erişebilir
+	•	Verilen görevleri görüntüler
+	•	Görevleri tamamlayıp sisteme yükler
+
+⸻
+
+👨‍🏫 Öğretmen
+	•	Google ile giriş yapar
+	•	Öğrencilerden gelen soruları görüntüler
+	•	Sorulara metin ve/veya çözüm fotoğrafı ile cevap verir
+	•	Öğrencilerle mesajlaşabilir
+	•	Ders linklerini chat üzerinden paylaşır
+	•	Takvim üzerinden öğrenciye görev atar
+	•	Öğrencinin yüklediği görevleri onaylar
+
+⸻
+
+🧠 Admin
+	•	Kullanıcı yönetimi yapar
+
+⸻
+
+🧩 TEMEL MODÜLLER
+
+1️⃣ Soru–Çözüm Modülü
+	•	Öğrenci fotoğraf yükleyerek soru gönderir
+	•	Öğretmen cevaplar (metin veya görsel)
+	•	Durum: “Bekliyor / Cevaplandı”
+
+⸻
+
+2️⃣ Mesajlaşma Modülü (Realtime)
+	•	Öğrenci–öğretmen arası anlık mesajlaşma
+	•	Sadece metin
+	•	Link paylaşımı desteklenir (Zoom vb.)
+	•	Supabase Realtime kullanılacak
+
+⸻
+
+3️⃣ Görev & Takvim Modülü (Basit)
+
+Öğretmen:
+	•	Takvimden tarih seçer
+	•	Görev girer (örn: “2 sayfa test, 10 sayfa kitap”)
+	•	Öğrenciye atar
+
+Öğrenci:
+	•	Görevi görür
+	•	Tamamladığını sisteme yükler (foto)
+
+Öğretmen:
+	•	Görevi inceler
+	•	“Onayla” butonu ile tamamlandı olarak işaretler
+
+Durumlar:
+	•	Bekliyor
+	•	Yüklendi
+	•	Onaylandı
+
+⸻
+
+🎯 TESLİM BEKLENTİLERİ
+	•	Tüm paneller çalışır durumda olmalı
+	•	Mobil uyumlu tasarım
+	•	Temiz ve hızlı arayüz
+	•	Rol bazlı yetkilendirme
+	•	Google ile giriş sorunsuz çalışmalı
+	•	Kodlar sürdürülebilir olmalı
+
+⸻
+
+⏱️ SÜRE & TESLİM
+	•	Tahmini süre: 3–5 hafta
+	•	Milestone bazlı ilerleme
+
+⸻
+
+💳 ÖNEMLİ NOTLAR
+	•	Ödeme sistemi yok
+	•	Canlı ders entegrasyonu yok
+	•	Ders/kredi sistemi yok
+	•	Sistem sade ama büyütülebilir olacak
+
+Kullanıcı giriş sistemi hazır çözüm (Google OAuth) ile sağlanacaktır, özel auth geliştirme yapılmayacaktır. Bu nedenle backend geliştirme yükü minimum düzeydedir.

@@ -1,0 +1,220 @@
+                <!-- app-Header -->
+                <div class="app-header header sticky">
+                    <div class="container-fluid main-container">
+                        <div class="d-flex align-items-center">
+                            <a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-bs-toggle="sidebar" href="javascript:void(0);"></a>
+                            <div class="responsive-logo">
+                                <a href="index.html" class="header-logo">
+                                    <img src="assets/images/brand/logo-3.png" class="mobile-logo logo-1" alt="logo">
+                                    <img src="assets/images/brand/logo.png" class="mobile-logo dark-logo-1" alt="logo">
+                                </a>
+                            </div>
+                            <!-- sidebar-toggle-->
+                            <a class="logo-horizontal " href="index.html">
+                                <img src="assets/images/brand/logo.png" class="header-brand-img desktop-logo" alt="logo">
+                                <img src="assets/images/brand/logo-3.png" class="header-brand-img light-logo1"
+                                    alt="logo">
+                            </a>
+                            <!-- LOGO -->
+                            <div class="main-header-center ms-3 d-none d-lg-block">
+                                <input class="form-control" placeholder="Search for anything..." type="search"> <button class="btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+                            </div>
+                            <div class="d-flex order-lg-2 ms-auto header-right-icons">
+                                <!-- SEARCH -->
+                                <button class="navbar-toggler navresponsive-toggler d-lg-none ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent-4" aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
+                                        <span class="navbar-toggler-icon fe fe-more-vertical text-dark"></span>
+                                    </button>
+                                <div class="navbar navbar-collapse responsive-navbar p-0">
+                                    <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+                                        <div class="d-flex order-lg-2">
+                                            <div class="dropdown d-block d-lg-none">
+                                                <a href="javascript:void(0);" class="nav-link icon" data-bs-toggle="dropdown">
+                                                    <i class="fe fe-search"></i>
+                                                </a>
+                                                <div class="dropdown-menu header-search dropdown-menu-start">
+                                                    <div class="input-group w-100 p-2">
+                                                        <input type="text" class="form-control" placeholder="Search....">
+                                                        <div class="input-group-text btn btn-primary">
+                                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="dropdown d-md-flex">
+                                                <a class="nav-link icon nav-link-bg" href="javascript:void(0);" (click)="toggleDarkMode($event)" style="cursor:pointer;">
+                                                    <span *ngIf="!isDarkMode"><i class="fe fe-moon"></i></span>
+                                                    <span *ngIf="isDarkMode"><i class="fe fe-sun"></i></span>
+                                                </a>
+                                            </div>
+                                            <!-- Theme-Layout -->
+                                            <div class="dropdown d-md-flex">
+                                                <a class="nav-link icon full-screen-link nav-link-bg">
+                                                    <i class="fe fe-minimize fullscreen-button" id="myvideo"></i>
+                                                </a>
+                                            </div>
+                                            <!-- FULL-SCREEN -->
+                                            <div class="dropdown d-md-flex notifications">
+                                                <a class="nav-link icon" data-bs-toggle="dropdown"><i class="fe fe-bell"></i><span class=" pulse"></span>
+                                                    </a>
+                                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow ">
+                                                    <div class="drop-heading border-bottom">
+                                                        <div class="d-flex">
+                                                            <h6 class="mt-1 mb-0 fs-16 fw-semibold">You have Notification</h6>
+                                                            <div class="ms-auto">
+                                                                <span class="badge bg-success rounded-pill">3</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="notifications-menu">
+                                                        <a class="dropdown-item d-flex" href="chat.html">
+                                                            <div class="me-3 notifyimg  bg-primary-gradient brround box-shadow-primary">
+                                                                <i class="fe fe-message-square"></i>
+                                                            </div>
+                                                            <div class="mt-1 wd-80p">
+                                                                <h5 class="notification-label mb-1">New review received</h5>
+                                                                <span class="notification-subtext">2 hours ago</span>
+                                                            </div>
+                                                        </a>
+                                                        <a class="dropdown-item d-flex" href="chat.html">
+                                                            <div class="me-3 notifyimg  bg-secondary-gradient brround box-shadow-primary">
+                                                                <i class="fe fe-mail"></i>
+                                                            </div>
+                                                            <div class="mt-1 wd-80p">
+                                                                <h5 class="notification-label mb-1">New Mails Received</h5>
+                                                                <span class="notification-subtext">1 week ago</span>
+                                                            </div>
+                                                        </a>
+                                                        <a class="dropdown-item d-flex" href="cart.html">
+                                                            <div class="me-3 notifyimg  bg-success-gradient brround box-shadow-primary">
+                                                                <i class="fe fe-shopping-cart"></i>
+                                                            </div>
+                                                            <div class="mt-1 wd-80p">
+                                                                <h5 class="notification-label mb-1">New Order Received</h5>
+                                                                <span class="notification-subtext">1 day ago</span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="dropdown-divider m-0"></div>
+                                                    <a href="javascript:void(0);" class="dropdown-item text-center p-3 text-muted">View all Notification</a>
+                                                </div>
+                                            </div>
+                                            <!-- NOTIFICATIONS / SON MESAJ -->
+                                            <div class="dropdown d-md-flex message">
+                                                <a class="nav-link icon text-center" data-bs-toggle="dropdown">
+                                                    <i class="fe fe-message-square"></i>
+                                                    <span class="pulse-danger" *ngIf="lastMessage"></span>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                                    <div class="drop-heading border-bottom">
+                                                        <h6 class="mt-1 mb-0 fs-16 fw-semibold">Mesajlar</h6>
+                                                    </div>
+                                                    <div class="message-menu">
+                                                        <div *ngIf="!lastMessage" class="text-center text-muted p-3 small">
+                                                            Yeni mesaj yok.
+                                                        </div>
+                                                        <a *ngIf="lastMessage" class="dropdown-item d-flex" href="javascript:void(0);" (click)="goToChat()">
+                                                            <span class="avatar avatar-md brround me-3 align-self-center bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width:38px;height:38px;font-size:15px;flex-shrink:0;">
+                                                                {{ lastMessage.senderName?.charAt(0)?.toUpperCase() }}
+                                                            </span>
+                                                            <div class="wd-90p">
+                                                                <div class="d-flex">
+                                                                    <h5 class="mb-1">{{ lastMessage.senderName }}</h5>
+                                                                    <small class="text-muted ms-auto">{{ lastMessage.sentAt | date:'HH:mm' }}</small>
+                                                                </div>
+                                                                <span class="text-truncate d-block" style="max-width:180px;">{{ lastMessage.content }}</span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="dropdown-divider m-0"></div>
+                                                    <a href="javascript:void(0);" class="dropdown-item text-center p-3 text-muted" (click)="goToChat()">Tüm Mesajlar</a>
+                                                </div>
+                                            </div>
+                                            <!-- MESSAGE-BOX (Profile) -->
+                                            <div class="dropdown d-md-flex profile-1">
+                                                <a href="javascript:void(0);" data-bs-toggle="dropdown" class="nav-link leading-none d-flex px-1">
+                                                    <span>
+                                                        <div class="avatar profile-user brround bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width:36px;height:36px;">
+                                                            {{ userName.charAt(0).toUpperCase() }}
+                                                        </div>
+                                                    </span>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="min-width:220px;">
+                                                    <div class="drop-heading">
+                                                        <div class="text-center py-2">
+                                                            <div class="avatar bg-primary text-white brround mx-auto mb-2 d-flex align-items-center justify-content-center fw-bold" style="width:48px;height:48px;font-size:20px;">
+                                                                {{ userName.charAt(0).toUpperCase() }}
+                                                            </div>
+                                                            <h5 class="text-dark mb-0">{{ userName }}</h5>
+                                                            <small class="text-muted">{{ userRole }}</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="dropdown-divider m-0"></div>
+                                                    <a class="dropdown-item" routerLink="/dashboard" *ngIf="authService.isAdmin()">
+                                                        <i class="dropdown-icon fe fe-home"></i> Dashboard
+                                                    </a>
+                                                    <a class="dropdown-item" routerLink="/chat">
+                                                        <i class="dropdown-icon fe fe-message-square"></i> Canlı Chat
+                                                    </a>
+                                                    <!-- Dark Mode Toggle -->
+                                                    <a class="dropdown-item d-flex align-items-center justify-content-between" href="javascript:void(0);" (click)="toggleDarkMode($event)">
+                                                        <span><i class="dropdown-icon fe" [ngClass]="isDarkMode ? 'fe-sun' : 'fe-moon'"></i> {{ isDarkMode ? 'Aydınlık Mod' : 'Karanlık Mod' }}</span>
+                                                        <span class="badge" [ngClass]="isDarkMode ? 'bg-warning' : 'bg-secondary'">{{ isDarkMode ? 'Açık' : 'Kapalı' }}</span>
+                                                    </a>
+                                                    <!-- Şifre Değiştir -->
+                                                    <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                                        <i class="dropdown-icon fe fe-lock"></i> Şifre Değiştir
+                                                    </a>
+                                                    <div class="dropdown-divider m-0"></div>
+                                                    <a class="dropdown-item text-danger" href="javascript:void(0);" (click)="logout()">
+                                                        <i class="dropdown-icon fe fe-alert-circle"></i> Çıkış Yap
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="dropdown d-md-flex header-settings">
+                                                <a href="javascript:void(0);" class="nav-link icon " data-bs-toggle="sidebar-right" data-target=".sidebar-right">
+                                                    <i class="fe fe-menu"></i>
+                                                </a>
+                                            </div>
+                                            <!-- SIDE-MENU -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /app-Header -->
+
+<!-- ŞİFRE DEĞİŞTİR MODAL -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fe fe-lock me-2"></i>Şifre Değiştir</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger py-2" *ngIf="pwError">{{ pwError }}</div>
+                <div class="alert alert-success py-2" *ngIf="pwSuccess">{{ pwSuccess }}</div>
+                <div class="mb-3">
+                    <label class="form-label">Mevcut Şifre</label>
+                    <input type="password" class="form-control" [(ngModel)]="pwForm.currentPassword" placeholder="••••••••">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Yeni Şifre</label>
+                    <input type="password" class="form-control" [(ngModel)]="pwForm.newPassword" placeholder="••••••••">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Yeni Şifre (Tekrar)</label>
+                    <input type="password" class="form-control" [(ngModel)]="pwForm.confirmPassword" placeholder="••••••••">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                <button type="button" class="btn btn-primary" (click)="submitChangePassword()">
+                    <i class="fe fe-save me-1"></i> Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

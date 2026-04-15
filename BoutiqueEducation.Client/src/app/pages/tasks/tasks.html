@@ -1,0 +1,218 @@
+<!-- PAGE-HEADER -->
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Ödev Takip Merkezi</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0);">Uygulama</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Ödevler</li>
+        </ol>
+    </div>
+    <div class="ms-auto pageheader-btn">
+        <button class="btn btn-primary btn-icon text-white me-2" *ngIf="authService.isTeacher()" (click)="openAssignModal()">
+            <span><i class="fe fe-edit"></i></span> Yeni Ödev Ata
+        </button>
+    </div>
+</div>
+<!-- PAGE-HEADER END -->
+
+<!-- TAKVİM -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header border-bottom d-flex align-items-center justify-content-between">
+                <h3 class="card-title mb-0"><i class="fe fe-calendar me-2"></i>Ödev Takvimi</h3>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="d-flex align-items-center gap-1"><span class="badge bg-primary">&nbsp;</span> <small>Bekliyor</small></span>
+                    <span class="d-flex align-items-center gap-1"><span class="badge bg-warning">&nbsp;</span> <small>Teslim Edildi</small></span>
+                    <span class="d-flex align-items-center gap-1"><span class="badge bg-success">&nbsp;</span> <small>Onaylandı</small></span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="text-center py-4" *ngIf="isLoading">
+                    <span class="spinner-border text-primary"></span>
+                    <p class="mt-2 text-muted">Yükleniyor...</p>
+                </div>
+                <div #calendarEl></div>
+                <p class="text-muted small mt-3" *ngIf="authService.isTeacher()">
+                    <i class="fe fe-info me-1"></i> Takvimde bir güne tıklayarak o güne ödev atayabilirsiniz.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ÖDEV LİSTESİ (TABLO) -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header border-bottom">
+                <h3 class="card-title">
+                    <ng-container *ngIf="authService.isTeacher()">Atadığım Ödevler</ng-container>
+                    <ng-container *ngIf="!authService.isTeacher()">Ödevlerim</ng-container>
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-nowrap border-bottom mb-0">
+                        <thead>
+                            <tr>
+                                <th *ngIf="authService.isTeacher()">Öğrenci</th>
+                                <th *ngIf="!authService.isTeacher()">Öğretmen</th>
+                                <th>Başlık</th>
+                                <th>Son Teslim</th>
+                                <th>Durum</th>
+                                <th>İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let t of tasks">
+                                <td *ngIf="authService.isTeacher()">{{ t.studentName || '-' }}</td>
+                                <td *ngIf="!authService.isTeacher()">{{ t.teacherName || 'Bilinmiyor' }}</td>
+                                <td class="fw-bold">{{ t.title }}</td>
+                                <td>
+                                    <span *ngIf="t.dueDate">{{ t.dueDate | date:'dd.MM.yyyy' }}</span>
+                                    <span *ngIf="!t.dueDate" class="text-muted">-</span>
+                                </td>
+                                <td>
+                                    <span class="badge" [ngClass]="{
+                                        'bg-info': t.status === 'Pending', 
+                                        'bg-warning': t.status === 'Submitted',
+                                        'bg-success': t.status === 'Approved',
+                                        'bg-danger': t.status === 'Rejected'
+                                    }">
+                                        {{ getStatusText(t.status) }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-primary btn-sm me-2" (click)="openViewModal(t)">
+                                        <i class="fe fe-eye me-1"></i> Detay
+                                    </button>
+                                    <button *ngIf="t.status === 'Submitted' && authService.isTeacher()" class="btn btn-success btn-sm" (click)="approveTask(t)">
+                                        <i class="fe fe-check me-1"></i> Onayla
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr *ngIf="tasks.length === 0 && !isLoading">
+                                <td colspan="5" class="text-center text-muted p-5">Sistemde ödev bulunamadı.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VIEW & SUBMIT TASK MODAL -->
+<div class="modal fade" id="viewTaskModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content" *ngIf="selectedTask">
+            <div class="modal-header">
+                <h5 class="modal-title">Ödev Detayı: {{ selectedTask.title }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <small class="text-muted">Öğretmen:</small>
+                        <p class="fw-bold mb-1">{{ selectedTask.teacherName }}</p>
+                    </div>
+                    <div class="col-md-6" *ngIf="authService.isTeacher()">
+                        <small class="text-muted">Öğrenci:</small>
+                        <p class="fw-bold mb-1">{{ selectedTask.studentName }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <small class="text-muted">Son Teslim:</small>
+                        <p class="fw-bold mb-1">{{ selectedTask.dueDate ? (selectedTask.dueDate | date:'dd.MM.yyyy') : 'Belirtilmemiş' }}</p>
+                    </div>
+                </div>
+
+                <div class="card shadow-none border mb-4">
+                    <div class="card-body">
+                        <h6 class="card-title text-muted mb-2"><i class="fe fe-info me-1"></i> Açıklama:</h6>
+                        <p class="fw-bold tx-15">{{ selectedTask.description || 'Bu ödev için ek bilgi girilmemiş.' }}</p>
+                    </div>
+                </div>
+
+                <div class="card shadow-none border bg-light mb-4" *ngIf="selectedTask.status !== 'Pending' && (selectedTask.submissionFileUrl || selectedTask.submissionNotes)">
+                    <div class="card-body">
+                        <h6 class="card-title text-primary"><i class="fe fe-file me-1"></i> Öğrencinin Teslimatı</h6>
+                        <div *ngIf="selectedTask.submissionFileUrl" class="mb-2">
+                            <a [href]="apiUrl + selectedTask.submissionFileUrl" target="_blank" class="btn btn-sm btn-primary">
+                                <i class="fe fe-download"></i> Yüklenen Dosyayı Görüntüle
+                            </a>
+                        </div>
+                        <p class="mb-0 text-muted" *ngIf="selectedTask.submissionNotes"><strong>Not:</strong> {{ selectedTask.submissionNotes }}</p>
+                    </div>
+                </div>
+
+                <div class="card shadow-none border bg-light" *ngIf="selectedTask.status === 'Approved'">
+                    <div class="card-body">
+                        <h6 class="card-title text-success mb-0"><i class="fe fe-check-circle me-1"></i> Bu ödev öğretmeniniz tarafından onaylanmıştır. Tebrikler!</h6>
+                    </div>
+                </div>
+
+                <div class="form-group mt-3" *ngIf="selectedTask.status === 'Pending' && authService.isStudent()">
+                    <label class="form-label text-primary"><i class="fe fe-upload me-1"></i> Dosya Yükle (PDF / Resim)</label>
+                    <input type="file" class="form-control mb-3" (change)="onFileSelected($event)" accept=".pdf,image/*">
+                    <label class="form-label text-warning"><i class="fe fe-file-text me-1"></i> Teslim Notunuz (Opsiyonel)</label>
+                    <textarea class="form-control" rows="3" [(ngModel)]="submitNotes" placeholder="Öğretmeninize iletmek istediğiniz ek notlar..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-success" *ngIf="selectedTask.status === 'Pending' && authService.isStudent()" (click)="submitTask()">
+                    <i class="fe fe-send me-1"></i> Şimdi Teslim Et
+                </button>
+                <button type="button" class="btn btn-success" *ngIf="selectedTask.status === 'Submitted' && authService.isTeacher()" (click)="approveTask(selectedTask)">
+                    <i class="fe fe-check me-1"></i> Onayla
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ASSIGN NEW TASK MODAL -->
+<div class="modal fade" id="assignTaskModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fe fe-edit me-2"></i>Yeni Ödev Ata</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Öğrenci Seç:</label>
+                    <div *ngIf="isLoadingStudents" class="text-center py-2">
+                        <span class="spinner-border spinner-border-sm text-primary"></span>
+                    </div>
+                    <select class="form-select" [(ngModel)]="newTask.studentId" *ngIf="!isLoadingStudents">
+                        <option value="" disabled>-- Öğrenci Seçin --</option>
+                        <option *ngFor="let s of students" [value]="s.id">{{ s.fullName }} ({{ s.email }})</option>
+                    </select>
+                    <div *ngIf="!isLoadingStudents && students.length === 0" class="text-muted small mt-1">
+                        Kayıtlı öğrenci bulunamadı.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Ödev Başlığı:</label>
+                    <input type="text" class="form-control" [(ngModel)]="newTask.title" placeholder="Örn: Matematik Deneme 1">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Son Teslim Tarihi:</label>
+                    <input type="date" class="form-control" [(ngModel)]="newTask.dueDate">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Detaylı Açıklama:</label>
+                    <textarea class="form-control" rows="4" [(ngModel)]="newTask.description" placeholder="Öğrencinin yapması gerekenler..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">İptal</button>
+                <button type="button" class="btn btn-primary" (click)="assignTask()">
+                    <i class="fe fe-check me-1"></i> Ödevi Ata
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

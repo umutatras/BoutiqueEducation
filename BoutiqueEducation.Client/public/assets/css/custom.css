@@ -1,0 +1,22 @@
+/* Yeni Görüşme */
+.meeting-checkbox-wrapper,
+.meeting-radio-wrapper {
+    column-gap: 10px;
+}
+
+.meeting-custom-control {
+    position: relative;
+    display: block;
+    min-height: 1.2rem;
+    padding-left: 1.1rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+.copyright-logo {
+    width: 100%;
+    max-width: 75px;
+}

@@ -1,0 +1,83 @@
+/* ===== CONTACT LİSTESİ ===== */
+.contact-item:hover {
+  background-color: rgba(70, 128, 255, 0.08) !important;
+}
+
+.active-contact {
+  background-color: rgba(70, 128, 255, 0.12) !important;
+  border-left: 3px solid #4680ff;
+}
+
+/* ===== MESAJ ALANI ===== */
+.chat-messages-area {
+  background: #f8f9fa;
+}
+
+/* ===== MESAJ BALONLARI ===== */
+.chat-bubble {
+  word-wrap: break-word;
+}
+
+.chat-bubble-own {
+  background: #4680ff;
+  color: #fff;
+  border-radius: 1rem 1rem 0 1rem;
+}
+
+.chat-bubble-other {
+  background: #fff;
+  color: #333;
+  border-radius: 1rem 1rem 1rem 0;
+  border: 1px solid #e8e8e8;
+}
+
+/* ===== DARK MODE ===== */
+.dark-mode .chat-messages-area {
+  background: #1a1a2e !important;
+}
+
+.dark-mode .chat-bubble-own {
+  background: #4361ee;
+  color: #fff;
+}
+
+.dark-mode .chat-bubble-other {
+  background: #2b2b40;
+  color: #d1d1e0;
+  border-color: #3b3b52;
+}
+
+.dark-mode .contact-item:hover {
+  background-color: rgba(67, 97, 238, 0.15) !important;
+}
+
+.dark-mode .active-contact {
+  background-color: rgba(67, 97, 238, 0.22) !important;
+  border-left-color: #4361ee;
+}
+
+/* Chat card'lar dark mode uyumu */
+.dark-mode .card {
+  background-color: #24243e;
+  border-color: #3b3b52;
+}
+
+.dark-mode .card-header {
+  background-color: #24243e;
+  border-color: #3b3b52;
+}
+
+.dark-mode .card-footer {
+  background-color: #24243e;
+  border-color: #3b3b52;
+}
+
+.dark-mode .form-control {
+  background-color: #1a1a2e;
+  border-color: #3b3b52;
+  color: #d1d1e0;
+}
+
+.dark-mode .form-control::placeholder {
+  color: #6c6c80;
+}

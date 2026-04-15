@@ -1,0 +1,28 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+
+# Secrets - ASLA GIT'E GÖNDERME
+appsettings.Production.json
+appsettings.secrets.json
+*.pfx
+*.p12
+
+# Entity Framework migrations temp files
+*.mdf
+*.ldf
+
+# VS
+.vs/
+.vscode/
+
+# Angular
+BoutiqueEducation.Client/node_modules/
+BoutiqueEducation.Client/dist/
+BoutiqueEducation.Client/.angular/
+
+# Logs
+*.log
+logs/
