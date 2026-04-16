@@ -11,12 +11,21 @@
                     <div class="card-body">
                         <form class="login100-form validate-form" (ngSubmit)="onSubmit()">
                             <span class="login100-form-title">
-                                Boutique Education
+                                Yeni Hesap Oluştur
                             </span>
 
                             <!-- Error Alert -->
                             <div class="alert alert-danger mb-3" *ngIf="errorMessage">
                                 <i class="fe fe-alert-triangle me-1"></i> {{ errorMessage }}
+                            </div>
+
+                            <div class="wrap-input100 validate-input">
+                                <input class="input100" type="text" name="fullName"
+                                       [(ngModel)]="dto.fullName" placeholder="Ad Soyad" required>
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="zmdi zmdi-account" aria-hidden="true"></i>
+                                </span>
                             </div>
 
                             <div class="wrap-input100 validate-input">
@@ -27,6 +36,7 @@
                                     <i class="zmdi zmdi-email" aria-hidden="true"></i>
                                 </span>
                             </div>
+
                             <div class="wrap-input100 validate-input">
                                 <input class="input100" type="password" name="password"
                                        [(ngModel)]="dto.password" placeholder="Şifre" required>
@@ -36,33 +46,31 @@
                                 </span>
                             </div>
 
+                            <div class="wrap-input100 validate-input">
+                                <input class="input100" type="password" name="confirmPassword"
+                                       [(ngModel)]="dto.confirmPassword" placeholder="Şifre Tekrar" required>
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="zmdi zmdi-lock-outline" aria-hidden="true"></i>
+                                </span>
+                            </div>
+
                             <div class="container-login100-form-btn mt-3">
                                 <button type="submit" class="login100-form-btn btn-primary w-100"
                                         [disabled]="isLoading">
                                     <span *ngIf="isLoading"
                                           class="spinner-border spinner-border-sm me-2"
                                           role="status"></span>
-                                    {{ isLoading ? 'Giriş yapılıyor...' : 'Giriş Yap' }}
+                                    {{ isLoading ? 'Kayıt yapılıyor...' : 'Kayıt Ol' }}
                                 </button>
                             </div>
 
-                            <!-- Divider -->
-                            <div class="d-flex align-items-center my-3">
-                                <hr class="flex-grow-1">
-                                <span class="px-2 text-muted small">VEYA</span>
-                                <hr class="flex-grow-1">
-                            </div>
-
-                            <!-- Google Sign-In Button (GIS native render) -->
-                            <div id="google-signin-btn" class="d-flex justify-content-center"></div>
-
                             <div class="text-center mt-4">
                                 <p class="text-muted mb-0">
-                                    Hesabınız yok mu?
-                                    <a routerLink="/register" class="text-primary fw-semibold">Kayıt Ol</a>
+                                    Zaten hesabınız var mı?
+                                    <a routerLink="/login" class="text-primary fw-semibold">Giriş Yap</a>
                                 </p>
                             </div>
-
                         </form>
                     </div>
                 </div>

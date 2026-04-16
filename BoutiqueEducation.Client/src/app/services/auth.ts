@@ -67,6 +67,16 @@ export class AuthService {
     return this.getRoles().includes('Admin');
   }
 
+  isApproved(): boolean {
+    const decoded = this.getDecodedToken();
+    if (!decoded) return false;
+    return decoded['isApproved'] === 'true';
+  }
+
+  isMember(): boolean {
+    return this.getRoles().includes('Uye');
+  }
+
   getFullName(): string {
     const decoded = this.getDecodedToken();
     if (!decoded) return '';

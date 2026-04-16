@@ -11,6 +11,8 @@ public sealed class AppUser : IdentityUser<Guid>, ICreatableEntity, IUpdatableEn
     public string? GoogleProviderId { get; set; }
     /// <summary>Öğretmenler için bölüm (Matematik, Fen, Biyoloji, vb.)</summary>
     public string? Department { get; set; }
+    /// <summary>Admin tarafından onaylanmış mı?</summary>
+    public bool IsApproved { get; set; } = false;
 
     public DateTime CreatedDate { get; set; } = DateTime.Now;
     public Guid? CreatedById { get; set; }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user';
+import Swal from 'sweetalert2';
 
 declare var bootstrap: any;
 
@@ -16,7 +17,7 @@ export class Users implements OnInit {
   isLoading = false;
 
   selectedUser: any = null;
-  editForm = { fullName: '', department: '', role: '', newPassword: '' };
+  editForm = { fullName: '', department: '', role: '', newPassword: '', isApproved: false };
 
   constructor(private userService: UserService) {}
 
@@ -40,21 +41,45 @@ export class Users implements OnInit {
     this.editForm = {
       fullName: user.fullName || '',
       department: user.department || '',
-      role: '', // Rolü şimdilik boş, backend mevcut rolü değiştirmiyor eğer boşsa
-      newPassword: ''
+      role: user.role || '',
+      newPassword: '',
+      isApproved: user.isApproved || false
     };
     const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
     modal.show();
+  }
+
+  approveUser(user: any) {
+    Swal.fire({
+      title: 'Emin misiniz?',
+      text: `${user.fullName} isimli kullanıcıyı onaylamak istiyor musunuz?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Evet, Onayla',
+      cancelButtonText: 'İptal',
+      confirmButtonColor: '#6259ca'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.userService.updateUser(user.id, { isApproved: true }).subscribe({
+          next: () => {
+            Swal.fire('Başarılı!', 'Kullanıcı onaylandı.', 'success');
+            this.loadUsers();
+          },
+          error: (err: any) => Swal.fire('Hata!', err.error?.message || 'Onaylanamadı.', 'error')
+        });
+      }
+    });
   }
 
   submitEdit() {
     if (!this.selectedUser) return;
     this.userService.updateUser(this.selectedUser.id, this.editForm).subscribe({
       next: () => {
+        Swal.fire('Başarılı!', 'Kullanıcı bilgileri güncellendi.', 'success');
         this.loadUsers();
         this.blurAndHide('editUserModal');
       },
-      error: (err: any) => alert('Güncellenemedi: ' + (err.error?.message || 'Hata'))
+      error: (err: any) => Swal.fire('Hata!', err.error?.message || 'Güncellenemedi.', 'error')
     });
   }
 

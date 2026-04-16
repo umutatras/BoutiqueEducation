@@ -23,7 +23,9 @@
                     <tr>
                         <th>Ad Soyad</th>
                         <th>E-posta</th>
+                        <th>Rol</th>
                         <th>Bölüm</th>
+                        <th>Durum</th>
                         <th>İşlem</th>
                     </tr>
                 </thead>
@@ -32,12 +34,22 @@
                         <td class="fw-bold">{{ u.fullName }}</td>
                         <td>{{ u.email }}</td>
                         <td>
+                            <span class="badge bg-info-transparent text-info">{{ u.role }}</span>
+                        </td>
+                        <td>
                             <span class="badge bg-primary-transparent text-primary" *ngIf="u.department">{{ u.department }}</span>
                             <span class="text-muted" *ngIf="!u.department">-</span>
                         </td>
                         <td>
+                            <span class="badge bg-success" *ngIf="u.isApproved">Onaylı</span>
+                            <span class="badge bg-warning" *ngIf="!u.isApproved">Onay Bekliyor</span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-success me-1" *ngIf="!u.isApproved" (click)="approveUser(u)" title="Onayla">
+                                <i class="fe fe-check"></i>
+                            </button>
                             <button class="btn btn-sm btn-outline-info" (click)="openEditModal(u)">
-                                <i class="fe fe-edit me-1"></i> Düzenle
+                                <i class="fe fe-edit"></i> Düzenle
                             </button>
                         </td>
                     </tr>
@@ -83,6 +95,12 @@
                 <div class="mb-3">
                     <label class="form-label">Şifre Değiştir (Opsiyonel)</label>
                     <input type="password" class="form-control" [(ngModel)]="editForm.newPassword" placeholder="Yeni şifre belirle...">
+                </div>
+                <div class="mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="isApprovedSwitch" [(ngModel)]="editForm.isApproved">
+                        <label class="form-check-label" for="isApprovedSwitch">Hesap Onaylı</label>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

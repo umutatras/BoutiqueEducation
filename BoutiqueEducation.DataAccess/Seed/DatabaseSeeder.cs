@@ -28,7 +28,7 @@ public static class DatabaseSeeder
 
     private static async Task SeedRolesAsync(RoleManager<AppRole> roleManager)
     {
-        string[] roles = ["Admin", "Teacher", "Student"];
+        string[] roles = ["Admin", "Teacher", "Student", "Uye"];
         foreach (var role in roles)
         {
             if (!await roleManager.RoleExistsAsync(role))
@@ -48,7 +48,8 @@ public static class DatabaseSeeder
             Email = email,
             FullName = "Platform Yöneticisi",
             EmailConfirmed = true,
-            Department = null
+            Department = null,
+            IsApproved = true
         };
 
         await userManager.CreateAsync(admin, "Admin@123456");
@@ -68,7 +69,8 @@ public static class DatabaseSeeder
             Email = email,
             FullName = "Ayşe Kaya",
             EmailConfirmed = true,
-            Department = "Matematik"   // Bölüm örneği
+            Department = "Matematik",
+            IsApproved = true
         };
 
         await userManager.CreateAsync(teacher, "Teacher@123");
@@ -94,7 +96,8 @@ public static class DatabaseSeeder
             var student = new AppUser
             {
                 UserName = email, Email = email,
-                FullName = fullName, EmailConfirmed = true
+                FullName = fullName, EmailConfirmed = true,
+                IsApproved = true
             };
 
             await userManager.CreateAsync(student, "Student@123");

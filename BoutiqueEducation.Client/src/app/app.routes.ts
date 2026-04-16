@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { Login } from './pages/login/login';
+import { Register } from './pages/register/register';
 import { MainLayout } from './layout/main-layout/main-layout';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { Questions } from './pages/questions/questions';
@@ -13,6 +14,7 @@ import { adminGuard } from './core/guards/admin-guard';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
+  { path: 'register', component: Register },
   {
     path: '',
     component: MainLayout,

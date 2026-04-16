@@ -41,7 +41,8 @@ public sealed class AuthService : IAuthService
         {
             UserName = dto.Email,
             Email = dto.Email,
-            FullName = dto.FullName
+            FullName = dto.FullName,
+            IsApproved = false // Admin onayı bekleyecek
         };
 
         var result = await _userManager.CreateAsync(user, dto.Password);
@@ -49,8 +50,9 @@ public sealed class AuthService : IAuthService
         if (!result.Succeeded)
             return Result.Failure("Kullanıcı oluşturulamadı: " + string.Join(", ", result.Errors.Select(e => e.Description)));
 
-        await EnsureRoleAsync(dto.Role);
-        await _userManager.AddToRoleAsync(user, dto.Role);
+        // Yeni kayıt olan kullanıcı "Uye" rolü alır
+        await EnsureRoleAsync("Uye");
+        await _userManager.AddToRoleAsync(user, "Uye");
 
         return Result.Success();
     }

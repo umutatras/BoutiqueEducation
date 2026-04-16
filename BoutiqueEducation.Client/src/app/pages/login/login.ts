@@ -1,16 +1,17 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth';
 import { environment } from '../../../environments/environment';
+import { finalize } from 'rxjs';
 
 declare const google: any;
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -51,7 +52,6 @@ export class Login implements OnInit {
     google.accounts.id.initialize({
       client_id: environment.googleClientId,
       callback: (response: any) => {
-        // NgZone içinde çalıştırarak Angular change detection'ı tetikle
         this.ngZone.run(() => {
           this.handleGoogleToken(response.credential);
         });
@@ -60,7 +60,6 @@ export class Login implements OnInit {
       cancel_on_tap_outside: true
     });
 
-    // Butonu render et
     google.accounts.id.renderButton(
       document.getElementById('google-signin-btn'),
       {
@@ -70,7 +69,7 @@ export class Login implements OnInit {
         text: 'signin_with',
         size: 'large',
         logo_alignment: 'left',
-        width: 360   // px cinsinden — GIS yüzde kabul etmiyor
+        width: 360
       }
     );
   }
@@ -80,7 +79,9 @@ export class Login implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.authService.login(this.dto).subscribe({
+    this.authService.login(this.dto).pipe(
+      finalize(() => this.isLoading = false)
+    ).subscribe({
       next: (res: any) => {
         const token = res?.data?.accessToken || res?.accessToken || res?.token;
         if (token) {
@@ -88,11 +89,9 @@ export class Login implements OnInit {
           this.router.navigate(['/dashboard']);
         } else {
           this.errorMessage = 'Token alınamadı.';
-          this.isLoading = false;
         }
       },
       error: (err: any) => {
-        this.isLoading = false;
         this.errorMessage = err.error?.message || 'E-posta veya şifre hatalı.';
       }
     });
@@ -102,17 +101,17 @@ export class Login implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.authService.googleLogin(idToken).subscribe({
+    this.authService.googleLogin(idToken).pipe(
+      finalize(() => this.isLoading = false)
+    ).subscribe({
       next: (res: any) => {
         const token = res?.data?.accessToken || res?.accessToken;
         if (token) {
           this.authService.saveToken(token);
           this.router.navigate(['/dashboard']);
         }
-        this.isLoading = false;
       },
       error: (err: any) => {
-        this.isLoading = false;
         this.errorMessage = err.error?.message || 'Google ile giriş başarısız.';
       }
     });

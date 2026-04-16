@@ -41,25 +41,47 @@ public sealed class UserService : IUserService
         return Result<List<ContactDto>>.Success(contacts);
     }
 
-    // Admin: tüm kullanıcıları listele
-    public async Task<Result<List<ContactDto>>> GetAllUsersAsync()
+    // Admin: tüm kullanıcıları listele (rol ve onay bilgisi dahil)
+    public async Task<Result<List<AdminUserDto>>> GetAllUsersAsync()
     {
         var users = await _context.Users
             .OrderBy(u => u.FullName)
-            .Select(u => new ContactDto(u.Id, u.FullName, u.Email ?? "", u.Department))
             .ToListAsync();
 
-        return Result<List<ContactDto>>.Success(users);
+        var result = new List<AdminUserDto>();
+        foreach (var u in users)
+        {
+            var roles = await _userManager.GetRolesAsync(u);
+            result.Add(new AdminUserDto
+            {
+                Id = u.Id,
+                FullName = u.FullName,
+                Email = u.Email ?? "",
+                Department = u.Department,
+                Role = roles.FirstOrDefault() ?? "Uye",
+                IsApproved = u.IsApproved,
+                CreatedDate = u.CreatedDate
+            });
+        }
+
+        return Result<List<AdminUserDto>>.Success(result);
     }
 
-    // Admin: kullanıcı güncelle (isim, bölüm, rol, şifre)
+    // Admin: kullanıcı güncelle (isim, bölüm, rol, şifre, onay)
     public async Task<Result> UpdateUserAsync(Guid userId, UpdateUserDto dto)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null) return Result.Failure("Kullanıcı bulunamadı.");
 
-        user.FullName = dto.FullName;
-        user.Department = dto.Department;
+        if (!string.IsNullOrWhiteSpace(dto.FullName))
+            user.FullName = dto.FullName;
+        
+        if (dto.Department != null) // Allow setting to empty but not null maybe? Or just check whitespace
+            user.Department = dto.Department;
+
+        // Onay durumu
+        if (dto.IsApproved.HasValue)
+            user.IsApproved = dto.IsApproved.Value;
 
         var updateResult = await _userManager.UpdateAsync(user);
         if (!updateResult.Succeeded)
