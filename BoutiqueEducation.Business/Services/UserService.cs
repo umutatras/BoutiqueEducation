@@ -75,7 +75,7 @@ public sealed class UserService : IUserService
 
         if (!string.IsNullOrWhiteSpace(dto.FullName))
             user.FullName = dto.FullName;
-        
+
         if (dto.Department != null) // Allow setting to empty but not null maybe? Or just check whitespace
             user.Department = dto.Department;
 

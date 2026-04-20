@@ -15,7 +15,7 @@ public static class DatabaseSeeder
     {
         await SeedRolesAsync(roleManager);
 
-        var admin   = await SeedAdminAsync(userManager);
+        var admin = await SeedAdminAsync(userManager);
         var teacher = await SeedTeacherAsync(userManager);
         var students = await SeedStudentsAsync(userManager);
 
@@ -95,8 +95,10 @@ public static class DatabaseSeeder
 
             var student = new AppUser
             {
-                UserName = email, Email = email,
-                FullName = fullName, EmailConfirmed = true,
+                UserName = email,
+                Email = email,
+                FullName = fullName,
+                EmailConfirmed = true,
                 IsApproved = true
             };
 

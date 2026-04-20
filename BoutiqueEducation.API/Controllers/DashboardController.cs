@@ -1,7 +1,6 @@
 using BoutiqueEducation.Business.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace BoutiqueEducation.API.Controllers;
 

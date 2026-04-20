@@ -1,6 +1,5 @@
-using BoutiqueEducation.Business.Models.DTOs;
 using BoutiqueEducation.Business.Models;
-using System.Threading.Tasks;
+using BoutiqueEducation.Business.Models.DTOs;
 
 namespace BoutiqueEducation.Business.Interfaces.Services;
 
