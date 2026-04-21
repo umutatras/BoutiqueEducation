@@ -128,9 +128,11 @@
                 <div class="card border bg-success-lt mb-3" *ngIf="selectedQuestion.status === 'Answered'">
                     <div class="card-body">
                         <h6 class="text-success mb-2"><i class="fe fe-check-circle me-1"></i> Cevap ({{ selectedQuestion.teacherName }}):</h6>
-                        <p class="mb-0">{{ selectedQuestion.answerText }}</p>
-                        <img *ngIf="selectedQuestion.answerImageUrl" [src]="apiUrl + selectedQuestion.answerImageUrl"
-                             class="img-fluid mt-3 rounded" style="max-height:250px;" alt="Cevap görseli">
+                        <div class="card shadow-none border p-3 bg-white mb-3">
+                            <p class="mb-0 tx-15">{{ selectedQuestion.answerText }}</p>
+                            <img *ngIf="selectedQuestion.answerImageUrl" [src]="selectedQuestion.answerImageUrl.startsWith('http') ? selectedQuestion.answerImageUrl : (apiUrl + selectedQuestion.answerImageUrl)"
+                                 class="img-fluid mt-2 rounded shadow-sm" style="max-height:200px;" alt="Cevap görseli">
+                        </div>
                     </div>
                 </div>
 

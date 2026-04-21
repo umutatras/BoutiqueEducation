@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth';
+import { finalize } from 'rxjs';
 import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-register',
@@ -39,9 +41,10 @@ export class Register {
       fullName: this.dto.fullName,
       email: this.dto.email,
       password: this.dto.password
-    }).subscribe({
+    })
+    .pipe(finalize(() => this.isLoading = false))
+    .subscribe({
       next: () => {
-        this.isLoading = false;
         Swal.fire({
           icon: 'success',
           title: 'Kayıt Başarılı!',
@@ -53,7 +56,6 @@ export class Register {
         });
       },
       error: (err: any) => {
-        this.isLoading = false;
         this.errorMessage = err.error?.message || 'Kayıt sırasında bir hata oluştu.';
       }
     });

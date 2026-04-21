@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth';
 import { UserService } from '../../services/user';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -16,10 +17,13 @@ export class Header implements OnInit {
   userName: string = '';
   userRole: string = '';
   userEmail: string = '';
+  profileImageUrl: string = '';
   isDarkMode: boolean = false;
+  public apiUrl = environment.apiUrl.replace('/api', '');
 
   lastMessage: any = null;
   lastMessageSenderName: string = '';
+
 
   // Şifre değiştirme
   pwForm = { currentPassword: '', newPassword: '', confirmPassword: '' };
@@ -35,8 +39,10 @@ export class Header implements OnInit {
   ngOnInit() {
     this.userName = this.authService.getFullName() || this.authService.getEmail() || 'Kullanıcı';
     this.userEmail = this.authService.getEmail();
+    this.profileImageUrl = this.authService.getProfileImageUrl();
     const roles = this.authService.getRoles();
     this.userRole = roles.length ? roles[0] : '';
+
 
     // Dark mode: localStorage'dan oku
     this.isDarkMode = localStorage.getItem('darkMode') === 'true';

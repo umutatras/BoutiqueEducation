@@ -14,7 +14,11 @@ public sealed class AppUser : IdentityUser<Guid>, ICreatableEntity, IUpdatableEn
     /// <summary>Admin tarafından onaylanmış mı?</summary>
     public bool IsApproved { get; set; } = false;
 
+    /// <summary>Kullanıcının profil fotoğrafı yolu</summary>
+    public string? ProfileImageUrl { get; set; }
+
     public DateTime CreatedDate { get; set; } = DateTime.Now;
+
     public Guid? CreatedById { get; set; }
 
     public DateTime? UpdatedDate { get; set; }

@@ -32,6 +32,8 @@ public sealed class TokenService : ITokenService
             new Claim(ClaimTypes.Email, user.Email!),
             new Claim(ClaimTypes.Name, user.FullName),
             new Claim("isApproved", user.IsApproved.ToString().ToLower()),
+            new Claim("profileImageUrl", user.ProfileImageUrl ?? "")
+
         };
 
         var userRoles = await _userManager.GetRolesAsync(user);

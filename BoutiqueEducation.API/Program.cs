@@ -22,12 +22,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AngularPolicy", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins("http://localhost:4200", "http://localhost:56968", "http://localhost:3000")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials(); // SignalR için AllowCredentials şarttır
     });
 });
+
 
 // 1. AppSettings - Options Pattern Kaydı
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));

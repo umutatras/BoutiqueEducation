@@ -94,4 +94,12 @@ export class AuthService {
     );
     return emailKey ? decoded[emailKey] : '';
   }
+
+
+  getProfileImageUrl(): string {
+    const decoded = this.getDecodedToken();
+    if (!decoded) return '';
+    return decoded['profileImageUrl'] || '';
+  }
 }
+
